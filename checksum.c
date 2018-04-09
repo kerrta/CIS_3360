@@ -1,7 +1,7 @@
 // Checksum
 
 void readFile(char *filename, char *output);
-void checksum(int size, char *input);
+char *checksum(int size, char *input);
 
 void readFile(char *filename, char *output, int size)
 {
@@ -21,7 +21,7 @@ void readFile(char *filename, char *output, int size)
 
 }
 
-void checksum(int size, char *input)
+char *checksum(int size, char *input)
 {
 
 }
