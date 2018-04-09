@@ -1,1 +1,1 @@
-# CIS_3360
+Security in Computing Assignments
