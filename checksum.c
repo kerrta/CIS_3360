@@ -1,4 +1,5 @@
 // Checksum
+// James Upchurch
 
 void readFile(char *filename, char *output);
 char *checksum(int size, char *input);
