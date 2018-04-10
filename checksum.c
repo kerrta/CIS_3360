@@ -57,7 +57,7 @@ void readFile(char *filename, int size)
 
 void checksum(int size, char *input, char *check)
 {
-
+	bitmask(input, size);
 
 	check = input + check;
 }
