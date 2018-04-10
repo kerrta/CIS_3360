@@ -3,6 +3,7 @@
 
 void readFile(char *filename, char *output);
 char *checksum(int size, char *input);
+int bitmask(char *word, int size);
 
 void readFile(char *filename, int size)
 {
@@ -61,7 +62,20 @@ void checksum(int size, char *input, char *check)
 	check = input + check;
 }
 
+int bitmask(char *word, int size)
+{
+	int i = 0, mask;
+	mask = word[i];
+	
+	for(size; size != 0; size - 8)
+	{
+		mask = (mask << 8) + word[i + 1];
 
+		i++;
+	}
+
+	return mask;
+}
 
 int main(int argc, char *argv[])
 {
