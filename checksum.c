@@ -7,7 +7,7 @@ char *checksum(int size, char *input);
 void readFile(char *filename, int size)
 {
 	FILE *fp;
-	int buffer, i = 0, wordLen = size / 4 + 1;
+	int buffer, i = 0, j = 0, wordLen = size / 4 + 1;
 	char *output = malloc(sizeof(char * wordLen));
 	char *check = calloc(wordLen, char);
 
@@ -36,7 +36,13 @@ void readFile(char *filename, int size)
 		{
 			output[i] = '\0';
 			checksum(size, output, check);
+
+			printf("%s", output);
+			j++;
 			i = 0;
+
+			if (j * (wordLen - 1) == 80)
+				printf("\n");
 		}
 		else
 			output[i] = buffer;
@@ -50,7 +56,9 @@ void readFile(char *filename, int size)
 
 void checksum(int size, char *input, char *check)
 {
-	
+
+
+	check = input + check;
 }
 
 
