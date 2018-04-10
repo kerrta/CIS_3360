@@ -1,9 +1,11 @@
+
 // Checksum
 // James Upchurch
 
-void readFile(char *filename, char *output);
-char *checksum(int size, char *input);
-int bitmask(char *word, int size);
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 
 void readFile(char *filename, int size)
 {
