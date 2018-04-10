@@ -33,7 +33,7 @@ void checksum(int size, char *input, unsigned int long *check)
 	*check = word + *check;
 }
 
-void readFile(int size, char *filename)
+void readFile(char *filename, int size)
 {
 	FILE *fp;
 	int buffer, i = 0, j = 0, characterCnt = 0, wordLen = size / 4 + 1;
@@ -92,7 +92,7 @@ void readFile(int size, char *filename)
 
 int main(int argc, char *argv[])
 {
-	readFile(argv[1], argv[2]);
+	readFile(argv[1], atoi(argv[2]));
 
 	return 0;
 }
