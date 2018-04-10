@@ -24,7 +24,7 @@ int bitmask(char *word, int size)
 	return mask;
 }
 
-void checksum(int size, char *input, uint long *check)
+void checksum(int size, char *input, unsigned int long *check)
 {
 	int word, tempCheck;
 
@@ -37,7 +37,7 @@ void readFile(int size, char *filename)
 {
 	FILE *fp;
 	int buffer, i = 0, j = 0, characterCnt = 0, wordLen = size / 4 + 1;
-	uint long *check = calloc(1, sizeof(uint long));
+	unsigned int long *check = calloc(1, sizeof(unsigned int long));
 	char *output = malloc(sizeof(char) * wordLen);
 
 	if (size != 8 && size != 16 && size != 32)
