@@ -7,8 +7,15 @@ char *checksum(int size, char *input);
 void readFile(char *filename, int size)
 {
 	FILE *fp;
-	int buffer, i = 0;
-	char *output = malloc(sizeof(char * (size / 4) + 1));
+	int buffer, i = 0, wordLen = size / 4 + 1;
+	char *output = malloc(sizeof(char * wordLen));
+	char *check = calloc(wordLen, char);
+
+	if (size != 8 && size != 16 && size != 32)
+	{
+		fprintf(stderr, "Valid checksum sizes are 8, 16, or 32\n");
+		return;
+	}
 
 	fp = fopen(filename, "r");
 
@@ -25,7 +32,15 @@ void readFile(char *filename, int size)
 			break;
 		}
 
-		output[i] = buffer;
+		if (wordLen - i == 1)
+		{
+			output[i] = '\0';
+			checksum(size, output, check);
+			i = 0;
+		}
+		else
+			output[i] = buffer;
+
 		i++;
 	}
 
@@ -33,9 +48,9 @@ void readFile(char *filename, int size)
 	fclose(fp);
 }
 
-char *checksum(int size, char *input)
+void checksum(int size, char *input, char *check)
 {
-
+	
 }
 
 
