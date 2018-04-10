@@ -9,8 +9,8 @@ void readFile(char *filename, int size)
 {
 	FILE *fp;
 	int buffer, i = 0, j = 0, wordLen = size / 4 + 1;
+	int *check = calloc(1, int);
 	char *output = malloc(sizeof(char * wordLen));
-	char *check = calloc(wordLen, char);
 
 	if (size != 8 && size != 16 && size != 32)
 	{
@@ -55,11 +55,14 @@ void readFile(char *filename, int size)
 	fclose(fp);
 }
 
-void checksum(int size, char *input, char *check)
+void checksum(int size, char *input, int *check)
 {
-	bitmask(input, size);
+	int word, tempCheck;
 
-	check = input + check;
+	word = bitmask(input, size);
+	tempCheck = bitmask(check, size);
+
+	*check = word + tempCheck;
 }
 
 int bitmask(char *word, int size)
