@@ -8,7 +8,7 @@ int bitmask(char *word, int size);
 void readFile(char *filename, int size)
 {
 	FILE *fp;
-	int buffer, i = 0, j = 0, wordLen = size / 4 + 1;
+	int buffer, i = 0, j = 0, characterCnt = 0, wordLen = size / 4 + 1;
 	int *check = calloc(1, int);
 	char *output = malloc(sizeof(char * wordLen));
 
@@ -33,6 +33,8 @@ void readFile(char *filename, int size)
 			break;
 		}
 
+		characterCnt++;
+
 		if (wordLen - i == 1)
 		{
 			output[i] = '\0';
@@ -51,6 +53,7 @@ void readFile(char *filename, int size)
 		i++;
 	}
 
+	printf("%2d bit checksum is %8lx for all %4d chars\n", size, check, characterCnt);
 
 	fclose(fp);
 }
@@ -70,7 +73,7 @@ int bitmask(char *word, int size)
 	int i = 0, mask;
 	mask = word[i];
 	
-	for(size; size != 0; size - 8)
+	for(size; size != 0; size = size - 8)
 	{
 		mask = (mask << 8) + word[i + 1];
 
