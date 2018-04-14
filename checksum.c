@@ -7,17 +7,15 @@
 #include <string.h>
 
 
-
-
-int bitmask(char *word, int size)
+unsigned int long bitmask(char *word, int size)
 {
-	int i = 0, mask;
+	int i = 0;
+	unsigned int long mask;
 	mask = word[i];
 	
-	for(; size != 0; size = size - 8)
+	for(size -=8; size != 0; size -= 8)
 	{
 		mask = (mask << 8) + word[i + 1];
-
 		i++;
 	}
 
@@ -26,17 +24,23 @@ int bitmask(char *word, int size)
 
 void checksum(int size, char *input, unsigned int long *check)
 {
-	int word, tempCheck;
+	unsigned int long word;
 
 	word = bitmask(input, size);
 
 	*check = word + *check;
+
+	*check = *check << (64 - size);
+	*check = *check >> (64 - size);
+
+	//printf(" %s %lx %lx\n", input, *check, word);
+	printf("%s", input);
 }
 
 void readFile(char *filename, int size)
 {
 	FILE *fp;
-	int buffer, i = 0, j = 0, characterCnt = 0, wordLen = size / 4 + 1;
+	int buffer, i = 0, j = 0, k, characterCnt = 0, wordLen = size / 8 + 1;
 	unsigned int long *check = calloc(1, sizeof(unsigned int long));
 	char *output = malloc(sizeof(char) * wordLen);
 
@@ -47,46 +51,75 @@ void readFile(char *filename, int size)
 	}
 
 	fp = fopen(filename, "r");
+	printf("\n");
 
 	if(fp == NULL)
+	{
 		printf("ERROR: FILE UNABLE TO OPEN\n");
+		return;
+	}
 
 	while(buffer != EOF)
 	{
-		buffer = fgetc(fp);
-		if (buffer == EOF)
-		{
-			output[i] = 'X';
-			output[i++] = '\0';
-			break;
-		}
-
-		characterCnt++;
-
 		if (wordLen - i == 1)
 		{
 			output[i] = '\0';
 			checksum(size, output, check);
 
-			printf("%s", output);
 			j++;
 			i = 0;
 
+			// Print 80 characters per line
 			if (j * (wordLen - 1) == 80)
 				printf("\n");
 		}
 		else
-			output[i] = buffer;
+		{
+			buffer = fgetc(fp);
 
-		i++;
+			//printf("\n buf %c buf ", buffer);
+
+			if (buffer == EOF)
+			{
+				if (size == 16 || size == 32)
+				{
+					if (wordLen - i != 1 && wordLen - i != wordLen)
+					{
+						for (k = 0; wordLen - i != 1 && wordLen - i != wordLen; i++, k++)
+							output[i] = 'X';
+
+						output[i] = '\0';
+
+						checksum(size, output, check);
+
+						j++;
+						characterCnt += k - 1; 
+						i = 0;
+
+						// Print 80 characters per line
+						if (j * (wordLen - 1) == 80)
+							printf("\n");
+
+					} else
+						break;
+
+				} else
+					break;
+			} else
+				output[i] = buffer;
+		
+			characterCnt++;
+			i++;
+			//printf("\n out %s out %d\n", output, i);
+		}
+		
 	}
 
+	printf("\n");
 	printf("%2d bit checksum is %8lx for all %4d chars\n", size, *check, characterCnt);
 
 	fclose(fp);
 }
-
-
 
 
 
